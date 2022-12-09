@@ -1,0 +1,27 @@
+.react-datepicker 
+{
+    font-size: 0.9rem;
+    background-color: rgb(238, 222, 222);
+    color: #000;
+    border: 1px solid #aeaeae;
+    border-radius: 1rem;
+}
+
+.react-datepicker__header 
+{
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.react-datepicker__day--keyboard-selected
+{
+    background-color: lightcoral;
+    border-radius: "1rem"
+    
+}
+
+.react-datepicker__day--keyboard-selected:hover
+{
+    background-color: lightcyan;
+    color: black;
+}
