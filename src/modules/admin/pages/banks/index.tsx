@@ -5,10 +5,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import eFormMode from "../../../../main/assets/enums/eFormMode";
 import DetailDrawer from "../../../../main/components/DetailDrawer";
 import DeleteModal from "../../../../main/components/ModalDetailDelete";
-import CategoryForm from "./CategoryForm";
+import BankForm from "./BankForm";
 import EventManager from "../../../../main/utils/eventManager";
 
-const CompaniesPage: FC = () => {
+const BanksPage: FC = () => {
   const [modeDrawer, setModeDrawer] = useState(null);
   const [formData, setFormData] = useState<any>(null);
   const [deleteRowId, setDeleteRowId] = useState<number>(0);
@@ -16,7 +16,7 @@ const CompaniesPage: FC = () => {
   const onIconClick = async (rowId: number, actionMethod: string) => {
     switch (actionMethod) {
       case eFormMode.Edit:
-        const m = await (await axios.get(`Category/${rowId}`)).data;
+        const m = await (await axios.get(`Bank/${rowId}`)).data;
         setFormData(m.data);
         setModeDrawer(eFormMode.Edit);
         break;
@@ -27,7 +27,7 @@ const CompaniesPage: FC = () => {
     }
   };
 
-  const handleCategoryAdd = () => {
+  const handleAddBank = () => {
     setModeDrawer(eFormMode.Insert);
   };
 
@@ -45,26 +45,26 @@ const CompaniesPage: FC = () => {
     <div>
       <Table
         onIconClick={onIconClick}
-        handleAddRow={handleCategoryAdd}
-        controller="Category"
+        handleAddRow={handleAddBank}
+        controller="Bank"
       />
       {(modeDrawer || formData) && (
         <DetailDrawer
           onClose={handleClose}
           onSave={() => {
             handleClose();
-            EventManager.raiseRefreshTable("Category");
+            EventManager.raiseRefreshTable("Bank");
           }}
           modeDrawer={modeDrawer}
           formData={formData}
-          controller="Category"
+          controller="Bank"
         >
-          <CategoryForm model={formData} />
+          <BankForm />
         </DetailDrawer>
       )}
       {deleteRowId != 0 && (
         <DeleteModal
-          controller="Category"
+          controller="Bank"
           deleteId={deleteRowId}
           handleCloseModal={handleCloseModal}
         />
@@ -73,4 +73,4 @@ const CompaniesPage: FC = () => {
   );
 };
 
-export default CompaniesPage;
+export default BanksPage;

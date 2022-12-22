@@ -140,7 +140,6 @@ const Table = (props: any) => {
   const renderCellValue = (row: any, column: any) => {
     const propName = stringManager.CamelCase(column.headerName);
     const cellValue = row[propName];
-
     if (cellValue == null && column.propertyType !== eColumnType.Actions) {
       return "";
     } else {

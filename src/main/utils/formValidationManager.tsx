@@ -1,4 +1,3 @@
-
 class FormValidationManager {
   static extractError(error: any) {
     if (error) {

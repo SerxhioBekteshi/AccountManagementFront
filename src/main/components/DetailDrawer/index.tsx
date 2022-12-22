@@ -27,11 +27,30 @@ const DetailDrawer = (props: IDetailDrawerProps) => {
   const methods = useForm();
   const { handleSubmit, reset, setValue, formState } = methods;
 
+  function isFile(input: any) {
+    if ("File" in window && input instanceof File) return true;
+    else return false;
+  }
+
   const dispatch = useDispatch();
 
+  const uploadImage = async (result: any, image: any) => {
+    if (!isNaN(result)) {
+      if (isFile(image)) {
+        await axios.put(
+          `/${controller}/image/${formData.id}`,
+          { image: image },
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+      }
+    }
+  };
+
   const handleFormSubmit = async (data: any) => {
-    console.log(data, "DATA");
+    const image = data.image;
+    delete data.image;
     let result: any;
+
     try {
       switch (modeDrawer) {
         case eFormMode.Edit:
@@ -44,11 +63,13 @@ const DetailDrawer = (props: IDetailDrawerProps) => {
         case eFormMode.Insert:
           if (controllerParts.length == 1) {
             result = await axios.post(controller, data);
+            uploadImage(result, image);
           } else {
             result = await axios.post(
               `/${controllerParts[0]}/${controllerParts[1]}`,
               data
             );
+            uploadImage(result, image);
           }
 
           break;

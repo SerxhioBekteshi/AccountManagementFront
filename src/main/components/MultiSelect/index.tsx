@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import ISelectOption from "../../interfaces/controllers/ISelectOption";
 import "./style.scss";
@@ -13,6 +13,7 @@ export interface IMultiSelectProps {
   selectInputRef?: any;
   optionsRendered?: any[];
   isMulti?: boolean;
+  error?: any;
 }
 
 const MultiSelect = (props: IMultiSelectProps) => {
@@ -26,6 +27,7 @@ const MultiSelect = (props: IMultiSelectProps) => {
     totalOptions,
     optionsRendered,
     isMulti,
+    error,
   } = props;
 
   const getSameValues = (array1: any, array2: any) => {
@@ -35,6 +37,10 @@ const MultiSelect = (props: IMultiSelectProps) => {
       });
     });
   };
+
+  useEffect(() => {
+    getSameValues(totalOptions, optionsRendered);
+  }, [optionsRendered]);
 
   const [selected, setSelected] = useState(
     getSameValues(totalOptions, optionsRendered)
@@ -46,9 +52,17 @@ const MultiSelect = (props: IMultiSelectProps) => {
     control: (base: any, state: any) => ({
       ...base,
       boxShadow: state.isFocused ? 0 : 0,
-      borderColor: state.isFocused ? brandColor : base.borderColor,
+      borderColor: state.isFocused
+        ? brandColor
+        : selected.length == 0
+        ? "red"
+        : base.borederColor,
       "&:hover": {
-        borderColor: state.isFocused ? brandColor : base.borderColor,
+        borderColor: state.isFocused
+          ? brandColor
+          : selected.length == 0
+          ? "red"
+          : base.borederColor,
         outline: 0,
         backgroundColor: "initial",
         boxShadow: "0 0 0 0.2rem transparent",

@@ -28,7 +28,6 @@ import AuthManager from "../../../../main/utils/authManager";
 import { createAlert } from "../../../../main/store/stores/notification/notification.store";
 import eNotificationType from "../../../../main/assets/enums/eNotificationType";
 
-
 const LeftBg: string =
   require("../../../../main/assets/images/bg/login-bgleft.svg").default;
 const RightBg: string =
@@ -48,12 +47,15 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const { handleSubmit, control, reset } = useForm();
   const dispatch = useDispatch();
-  
+
   const onSubmit = async (data: any) => {
-    data["userName"] = data.firstName  + data.lastName;
+    data["userName"] = data.firstName + data.lastName;
+    data["role"] = "";
     // dispatch(onRegister(data, navigate));
     try {
-      await AuthManager.register({ ...data });
+      const res: any = await AuthManager.register({ ...data });
+      console.log("HERE1", res);
+
       dispatch(
         createAlert({
           message: `Registered`,
@@ -61,8 +63,9 @@ const RegisterPage = () => {
           timeout: 3000,
         })
       );
-      navigate('/');
-    } catch (err:any) {
+      console.log("HERE@");
+      navigate("/");
+    } catch (err: any) {
       Error(err.message);
     }
   };
@@ -107,12 +110,9 @@ const RegisterPage = () => {
           <Col xxl={3} className="register-container">
             <Card className="register-login-card my-5">
               <CardBody>
-                <h4 className="mb-0 fw-bold">
-                  Register
-                </h4>
+                <h4 className="mb-0 fw-bold">Register</h4>
                 <small className="pb-4 d-block">
-                    Already have an account?
-                  
+                  Already have an account?
                   <Link
                     className="text-primary p-1 text-decoration-underline"
                     to="/login"
@@ -130,12 +130,12 @@ const RegisterPage = () => {
                         required: true,
                         minLength: {
                           value: 2,
-                          message: 
-                              "Min Length is 2",
+                          message: "Min Length is 2",
                         },
                         pattern: {
                           value: /^[^\s]+(?:$|.*[^\s]+$)/,
-                          message: "Entered value cant start/end or contain only white spacing"                         
+                          message:
+                            "Entered value cant start/end or contain only white spacing",
                         },
                       }}
                       render={({
@@ -143,12 +143,7 @@ const RegisterPage = () => {
                         fieldState: { error },
                       }) => (
                         <>
-                          <Label for="firstName">
-                    
-                              First Name
-                            
-                            :
-                          </Label>
+                          <Label for="firstName">First Name :</Label>
                           <Input
                             type="text"
                             name="firstName"
@@ -177,7 +172,8 @@ const RegisterPage = () => {
                         },
                         pattern: {
                           value: /^[^\s]+(?:$|.*[^\s]+$)/,
-                          message: "Entered value cant start/end or contain only white spacing",
+                          message:
+                            "Entered value cant start/end or contain only white spacing",
                         },
                       }}
                       render={({
@@ -185,12 +181,7 @@ const RegisterPage = () => {
                         fieldState: { error },
                       }) => (
                         <>
-                          <Label for="lastName">
-                            {" "}
-                              Last Name
-                            
-                            :
-                          </Label>
+                          <Label for="lastName"> Last Name :</Label>
                           <Input
                             type="text"
                             name="lastName"
@@ -223,9 +214,7 @@ const RegisterPage = () => {
                         fieldState: { error },
                       }) => (
                         <>
-                          <Label for="email">
-                            Email:
-                          </Label>
+                          <Label for="email">Email:</Label>
                           <Input
                             type="email"
                             name="email"
@@ -257,10 +246,7 @@ const RegisterPage = () => {
                         fieldState: { error },
                       }) => (
                         <>
-                          <Label>
-                              Phone number
-                            :
-                          </Label>
+                          <Label>Phone number :</Label>
                           <PhoneInput
                             inputStyle={{ width: "100%" }}
                             enableSearch={true}
@@ -306,7 +292,8 @@ const RegisterPage = () => {
                         pattern: {
                           value:
                             /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-                          message: "Password must be at least 8 characters with 1 upper case, 1 lower case letter, 1 special character and 1 number"
+                          message:
+                            "Password must be at least 8 characters with 1 upper case, 1 lower case letter, 1 special character and 1 number",
                         },
                       }}
                       render={({
@@ -314,10 +301,7 @@ const RegisterPage = () => {
                         fieldState: { error },
                       }) => (
                         <>
-                          <Label for="password">
-                           Password
-                            :
-                          </Label>
+                          <Label for="password">Password :</Label>
                           <InputIcon
                             type={inputType}
                             iconName={
@@ -372,8 +356,7 @@ const RegisterPage = () => {
                               }` as any
                             }
                           />
-                            At least 1 uppercase
-                          
+                          At least 1 uppercase
                         </p>
                         <p style={{ margin: "0.1rem" }}>
                           <FontAwesomeIcon
@@ -390,8 +373,7 @@ const RegisterPage = () => {
                               }` as any
                             }
                           />
-                            At least 1 lowercase
-                          
+                          At least 1 lowercase
                         </p>
                         <p style={{ margin: "0.1rem" }}>
                           <FontAwesomeIcon
@@ -408,8 +390,7 @@ const RegisterPage = () => {
                               }` as any
                             }
                           />
-                            At least 1 number
-                          
+                          At least 1 number
                         </p>
                         <p style={{ margin: "0.1rem" }}>
                           <FontAwesomeIcon
@@ -426,8 +407,7 @@ const RegisterPage = () => {
                               }` as any
                             }
                           />
-                            Minimum 8 characters
-                          
+                          Minimum 8 characters
                         </p>
                         <p style={{ margin: "0.1rem" }}>
                           <FontAwesomeIcon
@@ -444,8 +424,7 @@ const RegisterPage = () => {
                               }` as any
                             }
                           />
-                            At least 1 special character
-                          
+                          At least 1 special character
                         </p>
                       </div>
                     </PopoverBody>
@@ -453,15 +432,12 @@ const RegisterPage = () => {
 
                   <FormGroup className="d-flex" inline>
                     <p className=" ms-auto text-decoration-none">
-                    
-                        By clicking on Register, you agree to our
-                      {" "}
+                      By clicking on Register, you agree to our{" "}
                       <span className="text-secondary cursor-pointer">
                         Terms{" "}
                       </span>
                       <span className="text-secondary cursor-pointer">
-                          Cookie Policy
-                        
+                        Cookie Policy
                       </span>{" "}
                       and{" "}
                       <span className="text-secondary cursor-pointer">
@@ -494,4 +470,3 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
-

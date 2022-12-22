@@ -18,6 +18,16 @@ const adminRoutes: Array<IRoute> = [
     private: true,
   },
   {
+    path: "/admin/currencies",
+    element: loadable(() => import("./pages/currencies")),
+    private: true,
+  },
+  {
+    path: "/admin/banks",
+    element: loadable(() => import("./pages/banks")),
+    private: true,
+  },
+  {
     path: "/admin/companies/addCompanyManager/:id",
     element: loadable(() => import("./pages/registerCompanyManager")),
     private: true,
